@@ -34,7 +34,7 @@ export default async function Page({ params }) {
 
                         {!user && (
                             <p className="text-violet-700 mt-2">
-                                This Linkly profile doesn't exist yet.
+                                This Linkly profile doesn&apos;t exist yet.
                             </p>
                         )}
                     </div>
@@ -93,7 +93,7 @@ export default async function Page({ params }) {
                                 </div>
                                 <p className="text-violet-800 font-medium">Profile not found</p>
                                 <p className="text-violet-600 mt-1">
-                                    The handle <span className="font-semibold">@{handle}</span> doesn't exist yet.
+                                    The handle <span className="font-semibold">@{handle}</span> doesn&apos;t exist yet.
                                 </p>
                                 <Link
                                     href="/"
