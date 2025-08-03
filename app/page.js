@@ -1,103 +1,116 @@
-import Image from "next/image";
+"use client"
+import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Link from 'next/link';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [handleInput, setHandleInput] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <main className="min-h-[calc(100vh-64px)] flex flex-col">
+      <ToastContainer position="top-right" autoClose={3000} />
+      <section className="bg-gradient-to-b from-violet-500 to-purple-600 w-full flex-1">
+        <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20 max-w-7xl">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 max-w-6xl mx-auto">
+            {/* Left column - Text and CTA */}
+            <div className="w-full lg:w-1/2 space-y-6 text-center lg:text-left">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                Your Online Presence, Perfected.
+              </h1>
+              <p className="text-gray-200 text-lg md:text-xl max-w-2xl">
+                Join people using Linkly for their link in bio. One link to help you share everything you create, curate, and sell from your Instagram, TikTok, Twitter, YouTube, and other social media profiles.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 w-full max-w-xl">
+                <input
+                  type="text"
+                  placeholder="linkly.org/yourname"
+                  className="bg-white/90 flex-grow px-4 py-3 rounded-xl focus:outline-amber-300 focus:ring-2 focus:ring-amber-300 transition-all duration-200 text-gray-900"
+                  value={handleInput}
+                  onChange={e => setHandleInput(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (!handleInput.trim()) {
+                        toast.error("Please enter a handle before claiming.");
+                        return;
+                      }
+                      window.location.href = `/generate?handle=${encodeURIComponent(handleInput.trim())}`;
+                    }
+                  }}
+                />
+                <Link
+                  href={`/generate?handle=${encodeURIComponent(handleInput.trim())}`}
+                  className="bg-amber-300 hover:bg-amber-400 text-violet-900 font-semibold px-6 py-3 rounded-xl whitespace-nowrap transition-colors duration-200 text-center"
+                  onClick={(e) => {
+                    if (!handleInput.trim()) {
+                      e.preventDefault();
+                      toast.error("Please enter a handle before claiming.");
+                    }
+                  }}
+                >
+                  Claim Yours
+                </Link>
+              </div>
+            </div>
+
+            {/* Right column - Image/Illustration */}
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+              <div className="relative w-full max-w-md">
+                <div className="relative z-10 bg-white/10 backdrop-blur-sm p-6 rounded-3xl shadow-2xl border border-white/20">
+                  <div className="bg-white/90 rounded-2xl p-4 shadow-lg">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-purple-600"></div>
+                      <div>
+                        <div className="font-semibold text-violet-900">@yourname</div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      {['Portfolio', 'Latest Blog Post', 'My Socials', 'Contact Me'].map((item, idx) => (
+                        <div key={idx} className="bg-violet-100 hover:bg-violet-200 transition-colors duration-200 rounded-xl p-3 text-violet-900 font-medium text-center cursor-pointer">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-amber-300 to-pink-400 rounded-3xl opacity-50 blur-lg -z-10"></div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-violet-900 mb-12">
+            Everything you need in one link
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Easy to Use',
+                description: 'Create and customize your link in minutes with our intuitive interface.'
+              },
+              {
+                title: 'Fully Customizable',
+                description: 'Match your brand with custom colors, fonts, and styles.'
+              },
+              {
+                title: 'Powerful Analytics',
+                description: 'Track clicks and understand your audience with our built-in analytics.'
+              }
+            ].map((feature, index) => (
+              <div key={index} className="bg-violet-50 p-6 rounded-2xl hover:shadow-lg transition-shadow duration-200">
+                <h3 className="text-xl font-semibold text-violet-800 mb-2">{feature.title}</h3>
+                <p className="text-violet-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
