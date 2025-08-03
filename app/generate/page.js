@@ -61,7 +61,7 @@ const Generate = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:3000/api/add", requestOptions);
+            const response = await fetch("/api/add", requestOptions);
             const result = await response.json();
 
             if (response.ok && !result.error) {
